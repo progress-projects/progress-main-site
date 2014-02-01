@@ -1,0 +1,84 @@
+<% layout('/layout/page') -%>
+<% block('title', 'СЭОТ "Прогресс"'); -%>
+
+<div class="progress-info">
+  <h1 class="progress-header"><a href="/"><strong>Прогресс</strong></a></h1>
+  <h4>Социально-экономическое объединение трудящихся</h4>
+  
+  <br/>
+  <br/>
+  <br/>
+  
+  <div class="panel panel-info" style="width: 500px;display:inline-block">
+    <div class="panel-heading"><h3 class="panel-title">Сайт скоро откроется</h3></div>
+    
+    <div class="panel-body">
+      <div class="progress progress-striped">
+        <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: <%=complete%>%">
+          <span class="">Готов на <%=complete%>%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <br/>
+  <br/>
+  <br/>
+  
+  <form name="subscribeForm" class="form-inline" role="form">
+    <div class="form-group">
+      <p>Сообщить об открытии:</p>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Email" name="email">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit">Подписаться</button>
+        </span>
+      </div><!-- /input-group -->
+      <br/>
+      <div id="message" class="alert hide alert-success"></div>
+    </div>
+  </form>
+  
+  <script>
+    function showAlert(type, message) {
+      $("#message").html(message);
+      $("#message").removeClass("alert-" + (type == "danger" ? "success" : "danger") );
+      $("#message").addClass("alert-" + type);
+      $("#message").removeClass("hide");
+    }
+    
+    function hideAlert() {
+      $("#message").addClass("hide");
+    }
+    
+    $(document.forms['subscribeForm']).on('submit', function() {
+      var form = $(this);
+      
+      $(":submit", form).attr("disabled", "disabled");
+      hideAlert();
+      
+      $.ajax({
+        url: "/subscribe",
+        method: "POST",
+        data: form.serialize(),
+        complete: function () {
+          $(":submit", form).removeAttr("disabled");
+        },
+        statusCode: {
+          200: function () {
+            showAlert("success", "Email успешно добавлен");
+          },
+          403: function (jqXHR) {
+            showAlert("danger", "Не удалось добавить email");
+          },
+          500: function (jqXHR) {
+            //var error = JSON.parse(jqXHR.responseText);
+            showAlert("danger", "При добавлении email произошла ошибка");
+          }
+        }
+      });
+      
+      return false;
+    });
+  </script>
+</div>

@@ -1,0 +1,18 @@
+{
+  "name": "progress-main-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.8",
+    "ejs": "*",
+    "ejs-locals": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "nconf": "*",
+    "validator": "*",
+    "winston": "*"
+  }
+}
